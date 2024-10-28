@@ -6,8 +6,8 @@ class ConstantMethodHandleInfo(ConstantInfo):
         self.referenceIndex = 0
 
     def read_info(self, class_reader):
-        self.referenceKind = class_reader.read_unit8()
-        self.referenceIndex = int.from_bytes(class_reader.read_unit16(), byteorder="big")
+        self.referenceKind = class_reader.read_uint8()
+        self.referenceIndex = int.from_bytes(class_reader.read_uint16(), byteorder="big")
 
 
 class ConstantMethodTypeInfo(ConstantInfo):
@@ -15,7 +15,7 @@ class ConstantMethodTypeInfo(ConstantInfo):
         self.descriptorIndex = 0
 
     def read_info(self, class_reader):
-        self.descriptorIndex = int.from_bytes(class_reader.read_unit16(), byteorder="big")
+        self.descriptorIndex = int.from_bytes(class_reader.read_uint16(), byteorder="big")
 
 
 class ConstantInvokeDynamicInfo(ConstantInfo):
@@ -24,5 +24,5 @@ class ConstantInvokeDynamicInfo(ConstantInfo):
         self.nameAndTypeIndex = 0
 
     def read_info(self, class_reader):
-        self.bootstrapMethodAttrIndex = int.from_bytes(class_reader.read_unit16(), byteorder="big")
-        self.nameAndTypeIndex = int.from_bytes(class_reader.read_unit16(), byteorder="big")
+        self.bootstrapMethodAttrIndex = int.from_bytes(class_reader.read_uint16(), byteorder="big")
+        self.nameAndTypeIndex = int.from_bytes(class_reader.read_uint16(), byteorder="big")

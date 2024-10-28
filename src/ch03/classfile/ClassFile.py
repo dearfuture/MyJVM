@@ -33,13 +33,13 @@ class ClassFile:
         # 超类索引
         self.super_class = 0
         # 接口索引表
-        self.interfaces = None
+        self.interfaces = []
         # 变量
-        self.fields = None
+        self.fields = []
         # 方法
-        self.methods = None
+        self.methods = []
         # 属性
-        self.attributes = None
+        self.attributes = []
 
     @staticmethod
     def parse(class_data):

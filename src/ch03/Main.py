@@ -35,6 +35,21 @@ def load_class(class_name, class_path):
     cf = class_file.parse(class_data)
     return cf
 
+# 把class文件的一些重要信息打印出来
+def print_class_info(class_file):
+    print("version: {0}.{1}".format(class_file.major_version, class_file.minor_version))
+    print("constants count: {0}".format(len(class_file.constant_pool.cp)))
+    print("access flags: {0}".format(hex(int.from_bytes(class_file.access_flags, byteorder="big"))))
+    print("this class: {0}".format(class_file.class_name))
+    print("super class: {0}".format(class_file.super_class_name))
+    print("interfaces: {0}".format(class_file.interface_names))
+    print("fields count: {0}".format(len(class_file.fields)))
+    for f in class_file.fields:
+        print("   {0}".format(f.name))
+    print("methods count: {0}".format(len(class_file.methods)))
+    for m in class_file.methods:
+        print("   {0}".format(m.name))
+
 # 启动JVM函数
 def start_JVM(cmd):
     # 解析类路径
@@ -65,17 +80,3 @@ if __name__ == '__main__':
     main(fake_args)
 
 
-# 把class文件的一些重要信息打印出来
-def print_class_info(class_file):
-    print("version: {0}.{1}".format(class_file.major_version, class_file.minor_version))
-    print("constants count: {0}".format(len(class_file.constant_pool.cp)))
-    print("access flags: {0}".format(hex(int.from_bytes(class_file.access_flags, byteorder="big"))))
-    print("this class: {0}".format(class_file.class_name))
-    print("super class: {0}".format(class_file.super_class_name))
-    print("interfaces: {0}".format(class_file.interface_names))
-    print("fields count: {0}".format(len(class_file.fields)))
-    for f in class_file.fields:
-        print("   {0}".format(f.name))
-    print("methods count: {0}".format(len(class_file.methods)))
-    for m in class_file.methods:
-        print("   {0}".format(m.name))

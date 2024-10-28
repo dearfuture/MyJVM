@@ -45,10 +45,14 @@ class AttributeInfo:
     @staticmethod
     def read_attribute(class_reader:ClassReader, constant_pool:ConstantPool):
         attr_name_index = int.from_bytes(class_reader.read_uint16(), byteorder="big")
-        attr_name = constant_pool.get_utf8_str(attr_name_index)
+        attr_name = ""
+        # 注意会出现attr_name_index == 0的情况，必须加判断
+        if attr_name_index != 0:
+            attr_name = constant_pool.get_utf8_str(attr_name_index)
         # 注意这个length是u4，要用uint32读
         attr_length = int.from_bytes(class_reader.read_uint32(), byteorder="big")
         attr_info = AttributeInfo.new_attribute_info(attr_name, attr_length, constant_pool)
+        attr_info.read_info(class_reader)
         attr_info.attr_name_index = attr_name_index
         attr_info.attr_name = attr_name
         return attr_info

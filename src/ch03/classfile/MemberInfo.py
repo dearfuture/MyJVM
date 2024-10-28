@@ -29,6 +29,7 @@ class MemberInfo:
         member_count = int.from_bytes(class_reader.read_uint16(), byteorder="big")
         for i in range(member_count):
             member_infos.append(MemberInfo.read_member(class_reader, constant_pool))
+        return member_infos
 
     @staticmethod
     def read_member(class_reader:ClassReader, constant_pool:ConstantPool):
@@ -40,8 +41,8 @@ class MemberInfo:
 
     @property
     def name(self):
-        return self.constant_pool.get_utf8(self.name_index)
+        return self.constant_pool.get_utf8_str(self.name_index)
 
     @property
     def descriptor(self):
-        return self.constant_pool.get_utf8(self.descriptor_index)
+        return self.constant_pool.get_utf8_str(self.descriptor_index)
