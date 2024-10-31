@@ -48,7 +48,7 @@ class ClassPath:
 
     def parse_user_classpath(self, cp_option):
 
-        if cp_option and ClassPath.__exists(cp_option):
+        if not cp_option or not ClassPath.__exists(cp_option):
             cp_option = "."
         self.user_classpath = Entry.new_entry(cp_option)
 
@@ -57,8 +57,8 @@ class ClassPath:
         class_name = class_name + ".class"
         if self.boot_classpath:
             data, entry, error = self.boot_classpath.read_class(class_name)
-            if not data and self.ext_classPath:
-                data, entry, error = self.ext_classPath.read_class(class_name)
+            if not data and self.ext_classpath:
+                data, entry, error = self.ext_classpath.read_class(class_name)
                 if not data and self.user_classpath:
                     return self.user_classpath.read_class(class_name)
         return data, entry, error
