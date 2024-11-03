@@ -11,14 +11,14 @@ class ConstantPool:
 
     # 读取class文件初始化constant_pool
     def read_constant_pool(self, class_reader: ClassReader):
-        constant_pool_count = int.from_bytes(class_reader.read_uint16(), byteorder="big")
+        cp_count = int.from_bytes(class_reader.read_uint16(), byteorder="big")
         # 初始化长度为constant_pool_count的0数组
-        self.cp = [0 for i in range(constant_pool_count)]
+        self.cp = [0 for i in range(cp_count)]
 
         # 1 ~ constant_pool_count-1
         i = 1
-        while i < constant_pool_count:
-            self.cp[i] = ConstantInfo.read_constant_info(class_reader, self.cp)
+        while i < cp_count:
+            self.cp[i] = ConstantInfo.read_constant_info(class_reader, self)
             if(self.cp[i].tag == ConstantInfo.CONSTANT_Long or self.cp[i].tag == ConstantInfo.CONSTANT_Double):
                 # Long Double占两个数组位
                 i += 1

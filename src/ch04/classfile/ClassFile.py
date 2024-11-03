@@ -55,7 +55,7 @@ class ClassFile:
         self.constant_pool = ConstantPool()
         self.constant_pool.read_constant_pool(class_reader)
 
-        self.access_flags = class_reader.read_uint16()
+        self.access_flags = int.from_bytes(class_reader.read_uint16(), byteorder="big")
 
         self.this_class = int.from_bytes(class_reader.read_uint16(), byteorder="big")
         self.super_class = int.from_bytes(class_reader.read_uint16(), byteorder="big")

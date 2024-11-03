@@ -33,7 +33,7 @@ class MemberInfo:
 
     @staticmethod
     def read_member(class_reader:ClassReader, constant_pool:ConstantPool):
-        access_flags = class_reader.read_uint16()
+        access_flags = int.from_bytes(class_reader.read_uint16(), byteorder="big")
         name_index = int.from_bytes(class_reader.read_uint16(), byteorder="big")
         descriptor_index = int.from_bytes(class_reader.read_uint16(), byteorder="big")
         attributes = AttributeInfo.read_attributes(class_reader, constant_pool)
