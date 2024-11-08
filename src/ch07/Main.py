@@ -10,16 +10,28 @@ from classpath.ClassPath import ClassPath
 from Cmd import Cmd
 from rtda.Frame import Frame
 from rtda.LocalVars import LocalVars
+from rtda.OperandStack import OperandStack
+from rtda.heap.Class import Class
+from rtda.heap.ClassLoader import ClassLoader
+from rtda.heap.Method import Method
+
 
 
 def main(input_args):
     # 设置传入参数
-    print("JVM ch05")
+    print("JVM ch07")
 
+    # 设置传入参数
     parser = OptionParser(usage="usage:%prog [-options] class [args...]")
 
     parser.add_option("-v", "--version", action="store_true", default=False, dest="version_flag",
                       help="print version and exit.")
+    parser.add_option("--verbose", action="store_true", default=False, dest="verbose_class_flag",
+                      help="enable verbose output")
+    parser.add_option("--verbose:class", action="store_true", default=False, dest="verbose_class_flag",
+                      help="enable verbose of class loader info output")
+    parser.add_option("--verbose:inst", action="store_true", default=False, dest="verbose_inst_flag",
+                      help="enable verbose of instruction execute info output")
     parser.add_option("--cp", action="store", type="string", dest="cpOption", help="classpath")
     parser.add_option("--classpath", action="store", type="string", dest="cpOption", help="classpath")
     parser.add_option("--Xjre", action="store", type="string", dest="XjreOption", help="path to jre")
@@ -55,11 +67,12 @@ def load_class(class_name, class_path):
     cf = class_file.parse(class_data)
     return cf
 
-def get_main_method(class_file: ClassFile):
-    for method in class_file.methods:
-        if method.name == "main" and method.descriptor == "([Ljava/lang/String;)V":
-            return method
-    return None
+# 被Class的get_main_method取代
+# def get_main_method(class_file: ClassFile):
+#     for method in class_file.methods:
+#         if method.name == "main" and method.descriptor == "([Ljava/lang/String;)V":
+#             return method
+#     return None
 
 # 启动JVM函数
 def start_JVM(cmd):
@@ -71,31 +84,22 @@ def start_JVM(cmd):
     # 读取主类数据
     class_name = cmd.class_name.replace(".", "/")
 
-    class_data, _, error = class_path.read_class(class_name)
-    if error:
-        print("Could not find or load main class {0}\n".format(cmd.class_name))
-        exit(0)
-    # 打印class里面的数据信息
-    print("class data: {0}".format([int(hex(d), 16) for d in class_data]))
+    # 用类加载器加载
+    class_loader = ClassLoader(class_path, cmd.verbose_class_flag)
+    main_class = class_loader.load_class(class_name)
+    main_method = main_class.get_main_method()
 
-    class_file = load_class(class_name, class_path)
-
-    main_method = get_main_method(class_file)
     if main_method:
-
-        code_attr = main_method.code_attributes
-        bytecode = code_attr.code
-        code_length = code_attr.code_length
-
+        bytecode = main_method.code
         hex_string = ' '.join(f'{byte:02x}' for byte in bytecode)
         print(hex_string)
-
         Interpreter.interpret(main_method)
 
     else:
         print("Main method not found")
 
 if __name__ == '__main__':
+
     Xjre_path = os.path.join(os.environ.get("JAVA_HOME"), "jre")
 
     # 指定-Xjre选项和类名
@@ -103,7 +107,12 @@ if __name__ == '__main__':
     resources_path = os.path.join(os.path.dirname(root_path), "java/class")
     # resources_path = "F:\\JVM\\MyJVM\\java\\class"
 
-    fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch05.GaussTest']
+    # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch07.InvokeDemo']
+    fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch07.FibonacciTest']
+
+    # 必须实现<clinit>和invokestatic
+    # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch06.FieldTest']
+
     main(fake_args)
 
 

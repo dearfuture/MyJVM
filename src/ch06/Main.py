@@ -128,7 +128,9 @@ if __name__ == '__main__':
     Xjre_path = os.path.join(os.environ.get("JAVA_HOME"), "jre")
 
     # 指定-Xjre选项和类名
-    resources_path = "F:\\JVM\\MyJVM\\java\\class"
+    root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+    resources_path = os.path.join(os.path.dirname(root_path), "java/class")
+    # resources_path = "xxx\\java\\class"
 
     fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch06.MyObject']
 
