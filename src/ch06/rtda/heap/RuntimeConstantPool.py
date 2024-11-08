@@ -27,8 +27,7 @@ class RuntimeConstantPool:
 
             if cp_info.tag == ConstantInfo.CONSTANT_Long or cp_info.tag == ConstantInfo.CONSTANT_Double:
                 consts[i] = cp_info.val
-                # 不需要+1 ???
-                # i += 1
+                i += 1
             elif cp_info.tag == ConstantInfo.CONSTANT_Integer or cp_info.tag == ConstantInfo.CONSTANT_Float:
                 consts[i] = cp_info.val
 

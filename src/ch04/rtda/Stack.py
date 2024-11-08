@@ -16,7 +16,7 @@ class Stack:
     def push(self, frame: Frame):
         if self.size >= self.max_size:
             raise RuntimeError("java.lang.StackOverflowError")
-        if self.__top is None:
+        if self.__top:
             Frame.lower = self.__top
         self.__top = frame
         self.size += 1
