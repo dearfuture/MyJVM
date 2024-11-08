@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
+from instructions.base import ClassInitLogic
 from instructions.base.Instruction import Index16Instruction
 from rtda.Frame import Frame
 
@@ -12,6 +12,12 @@ class PUT_STATIC(Index16Instruction):
         field_ref = rt_constant_pool.get_constant(self.index)
         field = field_ref.resolved_field()
         clazz = field.get_class()
+
+        if not clazz.init_started:
+            # 重置next_pc, 执行完init_class即<clinit>后再重新执行NEW
+            frame.revert_next_pc()
+            ClassInitLogic.init_class(frame.thread, clazz)
+            return
 
         if not field.is_static():
             raise RuntimeError("java.lang.IncompatibleClassChangeError")

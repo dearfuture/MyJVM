@@ -37,6 +37,9 @@ class Class:
         # 静态变量
         self.static_vars = Slots()
 
+        # ch07 类是否已经初始化(没有则可能触发<clinit>的调用)
+        self.init_started = False
+
     @staticmethod
     def new_class(class_file: ClassFile):
         clazz = Class()
@@ -84,6 +87,9 @@ class Class:
     # 获取main方法
     def get_main_method(self):
         return self.get_static_method("main", "([Ljava/lang/String;)V")
+
+    def get_clinit_method(self):
+        return self.get_static_method("<clinit>", "()V")
 
     def get_static_method(self, name: str, descriptor: str):
         for method in self.methods:

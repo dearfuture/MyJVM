@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
+from instructions.comparsions.Ifacmp import IF_ACMPEQ, IF_ACMPNE
 from instructions.comparsions.Ifcond import IFEQ, IFNE, IFLT, IFGE, IFGT, IFLE
-from instructions.comparsions.Ificmp import IF_ICMPLE
+from instructions.comparsions.Ificmp import IF_ICMPLE, IF_ICMPGT, IF_ICMPGE, IF_ICMPLT, IF_ICMPEQ, IF_ICMPNE
 from instructions.comparsions.Lcmp import LCMP
 from instructions.constants.Const import ICONST_0, ICONST_1, ICONST_M1, ACONST_NULL, LCONST_1, ICONST_2, ICONST_3, \
     LCONST_0, ICONST_4, ICONST_5
@@ -28,6 +29,7 @@ from instructions.references.New import NEW
 from instructions.references.PutField import PUT_FIELD
 from instructions.references.PutStatic import PUT_STATIC
 from instructions.stack.Dup import DUP
+from instructions.stack.Pop import POP, POP2
 from instructions.stores.Astore import ASTORE, ASTORE_1, ASTORE_2, ASTORE_3, ASTORE_0
 from instructions.stores.Istore import ISTORE_1, ISTORE_2, ISTORE_3
 from instructions.stores.Lstore import LSTORE_1, LSTORE_0, LSTORE_2, LSTORE_3
@@ -133,6 +135,10 @@ class InstructionFactory:
         elif opcode == 0x4e:
             return ASTORE_3()
 
+        elif opcode == 0x57:
+            return POP()
+        elif opcode == 0x58:
+            return POP2()
         elif opcode == 0x59:
             return DUP()
 
@@ -146,8 +152,37 @@ class InstructionFactory:
         elif opcode == 0x84:
             return IINC()
 
+
+        elif opcode == 0x99:
+            return IFEQ()
+        elif opcode == 0x9a:
+            return IFNE()
+        elif opcode == 0x9b:
+            return IFLT()
+        elif opcode == 0x9c:
+            return IFGE()
+        elif opcode == 0x9d:
+            return IFGT()
+        elif opcode == 0x9e:
+            return IFLE()
+
+        elif opcode == 0x9f:
+            return IF_ICMPEQ()
+        elif opcode == 0xa0:
+            return IF_ICMPNE()
+        elif opcode == 0xa1:
+            return IF_ICMPLT()
+        elif opcode == 0xa2:
+            return IF_ICMPGE()
+        elif opcode == 0xa3:
+            return IF_ICMPGT()
         elif opcode == 0xa4:
             return IF_ICMPLE()
+        elif opcode == 0xa5:
+            return IF_ACMPEQ()
+        elif opcode == 0xa6:
+            return IF_ACMPNE()
+
         elif opcode == 0xa7:
             return GOTO()
 

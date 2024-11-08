@@ -48,3 +48,6 @@ class Method(ClassMember):
 
     def is_abstract(self):
         return 0 != self.access_flags & AccessFlags.ACC_ABSTRACT
+
+    def is_native(self):
+        return 0 != self.access_flags & AccessFlags.ACC_NATIVE

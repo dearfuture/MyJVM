@@ -15,3 +15,10 @@ def invoke_method(invoke_frame: Frame, method: Method):
         slot = invoke_frame.operand_stack.pop_slot()
         new_frame.local_vars.set_slot(i, slot)
         i -= 1
+
+    # hack to handle NativeMethod
+    if method.is_native():
+        if method.name == "registerNatives":
+            thread.pop_frame()
+        else:
+            print("NativeMethod: {}.{}{}".format(method.get_class().name, method.name, method.descriptor))

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
+from instructions.base import ClassInitLogic
 from instructions.base.Instruction import Index16Instruction
 from rtda.Frame import Frame
 
@@ -9,6 +9,12 @@ class NEW(Index16Instruction):
         rt_constant_pool = frame.method.get_class().rt_constant_pool
         class_ref = rt_constant_pool.get_constant(self.index)
         clazz = class_ref.resolved_class()
+
+        if not clazz.init_started:
+            # 重置next_pc, 执行完init_class即<clinit>后再重新执行NEW
+            frame.revert_next_pc()
+            ClassInitLogic.init_class(frame.thread, clazz)
+            return
 
         if clazz.is_interface() or clazz.is_abstract():
             raise RuntimeError("java.lang.InstantiationError")

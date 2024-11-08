@@ -21,7 +21,7 @@ class INVOKE_INTERFACE(Index16Instruction):
         rt_constant_pool = current_class.rt_constant_pool
         method_ref = rt_constant_pool.get_constant(self.index)
         resolved_method = method_ref.resolved_interface_method()
-        if resolved_method.static() or resolved_method.is_private():
+        if resolved_method.is_static() or resolved_method.is_private():
             raise RuntimeError("java.lang.IncompatibleClassChangeError")
 
         obj_ref = frame.operand_stack.get_ref_from_top(resolved_method.arg_slot_count - 1)

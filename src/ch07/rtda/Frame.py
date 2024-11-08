@@ -18,4 +18,7 @@ class Frame:
         self.operand_stack = OperandStack(method.max_stack)
         self.next_pc = 0
 
+    # 重置next_pc为当前执行的虚拟机指令(如NEW/INVOKE_STATIC/GET_STATIC等), 用于被类加载打断, 执行<cinit>初始化后, 重新执行这条被打断的虚拟机指令
+    def revert_next_pc(self):
+        self.next_pc = self.thread.pc
 

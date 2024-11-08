@@ -108,11 +108,9 @@ if __name__ == '__main__':
     # resources_path = "F:\\JVM\\MyJVM\\java\\class"
 
     # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch07.InvokeDemo']
-    fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch07.FibonacciTest']
-
-    # 必须实现<clinit>和invokestatic
     # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch06.FieldTest']
 
+    fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch07.FibonacciTest']
     main(fake_args)
 
 

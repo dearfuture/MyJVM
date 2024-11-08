@@ -51,9 +51,9 @@ class Interpreter:
             instruction.fetch_operands(bytecode_reader)
             frame.next_pc = bytecode_reader.pc
 
-            if frame.method.get_class().name.find("<clinit>") == -1:
-                inst_count += 1
-                print("inst_count={0}".format(inst_count))
+            # if frame.method.name.find("<clinit>") == -1:
+            inst_count += 1
+            print("inst_count={0}".format(inst_count))
 
             if log_inst:
                 Interpreter.log_instruction(frame, instruction, opcode)
