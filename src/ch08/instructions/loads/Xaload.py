@@ -18,7 +18,7 @@ def _xload(frame: Frame):
     stack.push_numeric(xarray[index])
 
 # 非原生数组
-class AAOAD(NoOperandsInstruction):
+class AALOAD(NoOperandsInstruction):
     def execute(self, frame: Frame):
         stack = frame.operand_stack
         index = stack.pop_numeric()

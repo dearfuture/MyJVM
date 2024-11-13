@@ -4,6 +4,7 @@ from instructions.base.Instruction import Index16Instruction
 from instructions.base.MethodInvokeLogic import invoke_method
 from rtda.Frame import Frame
 from rtda.heap.MethodLookup import lookup_method_in_class
+from rtda.heap import StringPool
 
 
 class INVOKE_VIRTUAL(Index16Instruction):
@@ -29,6 +30,12 @@ class INVOKE_VIRTUAL(Index16Instruction):
                     print("{0}".format(stack.pop_numeric() != 0))
                 elif descriptor in {"(C)V", "(B)V", "(S)V", "(I)V", "(J)V", "(F)V", "(D)V"}:
                     print("{0}".format(stack.pop_numeric()))
+
+                elif descriptor == "(Ljava/lang/String;)V":
+                    j_str = stack.pop_ref()
+                    py_str = StringPool.py_string(j_str)
+                    print(py_str)
+
                 else:
                     raise RuntimeError("println: " + method_ref.descriptor)
 

@@ -8,6 +8,8 @@ from instructions.base.Instruction import Instruction
 from rtda.Frame import Frame
 from rtda.Thread import Thread
 from rtda.heap.Method import Method
+from rtda.heap import StringPool
+
 
 class Interpreter:
     def __init__(self):
@@ -21,11 +23,24 @@ class Interpreter:
     #     bytecode = code_attr.code
 
     @staticmethod
-    def interpret(method: Method):
+    def create_args_array(class_loader, args):
+        string_class = class_loader.load_class("java/lang/String")
+        args_array = string_class.array_class().new_array(len(args))
+        j_args = args_array.refs
+        for i, arg in enumerate(args):
+            j_args[i] = StringPool.j_string(class_loader, arg)
+        return args_array
+
+    @staticmethod
+    # def interpret(method: Method):
+    def interpret(method: Method, args):
         thread = Thread()
         frame = thread.new_frame(method)
         thread.push_frame(frame)
-        # bytecode = method.code
+
+        if len(args) > 0:
+            j_args = Interpreter.create_args_array(method.get_class().loader, args)
+            frame.local_vars.set_ref(0, j_args)
 
         try:
             # Interpreter.loop(thread, True)

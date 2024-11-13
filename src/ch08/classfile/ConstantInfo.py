@@ -104,13 +104,13 @@ class ConstantInfo(metaclass=ABCMeta):
         elif tag == ConstantInfo.CONSTANT_InterfaceMethodRef:
             return ConstantInterfaceMethodRefInfo(constant_pool)
 
-        # TODO invokebydynamic指令相关 JAVA1.7
-        # elif tag == ConstantInfo.CONSTANT_MethodHandler:
-        #     return ConstantMethodHandleInfo()
-        # elif tag == ConstantInfo.CONSTANT_MethodType:
-        #     return ConstantMethodTypeInfo()
-        # elif tag == ConstantInfo.CONSTANT_InvokeDynamic:
-        #     return ConstantInvokeDynamicInfo()
+        #  invokebydynamic指令相关JDK1.7开始支持 由于需要加载父类如 Java/lang/Object, 必须实现
+        elif tag == ConstantInfo.CONSTANT_MethodHandler:
+            return ConstantMethodHandleInfo()
+        elif tag == ConstantInfo.CONSTANT_MethodType:
+            return ConstantMethodTypeInfo()
+        elif tag == ConstantInfo.CONSTANT_InvokeDynamic:
+            return ConstantInvokeDynamicInfo()
 
         else:
             raise RuntimeError("java.lang.ClassFormatError: INVALID constant pool tag!")

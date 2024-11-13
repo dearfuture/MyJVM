@@ -64,4 +64,12 @@ class Object:
     def array_length(self):
         return len(self.data)
 
+    def set_ref_var(self, name, descriptor, ref):
+        field = self.clazz.get_field(name, descriptor, False)
+        slots = self.data
+        slots.set_ref(field.slot_id, ref)
 
+    def get_ref_var(self, name, descriptor):
+        field = self.clazz.get_field(name, descriptor, False)
+        slots = self.data
+        return slots.get_ref(field.slot_id)

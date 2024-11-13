@@ -7,14 +7,11 @@ def lookup_method(clazz: Class, name: str, descriptor: str):
     method = lookup_method_in_class(clazz, name, descriptor)
     if method is None:
         # 已经在本类找过了
-        method = lookup_method_in_class(clazz, name, descriptor, False)
+        method = lookup_method_in_interfaces(clazz, name, descriptor, False)
     return method
-
 
 def lookup_interface_method(clazz: Class, name: str, descriptor: str):
     return lookup_method_in_class(clazz, name, descriptor)
-
-
 
 def lookup_method_in_class(clazz: Class, name: str, descriptor: str):
     c = clazz
@@ -25,7 +22,6 @@ def lookup_method_in_class(clazz: Class, name: str, descriptor: str):
 
         c = c.super_class
     return None
-
 
 def lookup_method_in_interfaces(clazz: Class, name: str, descriptor: str, search_self = True):
     if search_self:

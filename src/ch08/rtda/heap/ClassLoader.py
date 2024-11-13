@@ -9,6 +9,7 @@ from rtda.Slot import Slots
 from rtda.heap import AccessFlags
 from rtda.heap.Class import Class
 from rtda.heap.Field import Field
+from rtda.heap import StringPool
 
 
 class ClassLoader:
@@ -143,9 +144,11 @@ class ClassLoader:
             elif type in {"J", "F", "D"}:
                 val = rt_constant_pool.get_constant(index)
                 static_vars.set_numeric(slot_id, val)
-            # elif type == "Ljava/lang/String;":
-                # TODO
 
+            elif type == "Ljava/lang/String;":
+                py_str = rt_constant_pool.get_constant(index)
+                jstr = StringPool.j_string(clazz.loader, py_str)
+                static_vars.set_ref(slot_id, jstr)
 
     # 数组类
     def load_array_class(self, class_name):

@@ -99,7 +99,7 @@ class Class:
 
     def new_object(self):
         from .Object import Object
-        return Object(self)
+        return Object.new_object(self)
 
     # 用于判断super访问标志是否被设置
     def is_super(self):
@@ -126,14 +126,42 @@ class Class:
     def is_assignable_from(self, other_class):
         if self == other_class:
             return True
-        if not self.is_interface():
-            return other_class.is_sub_class_of(self)
+
+        if not other_class.is_array():
+            if not other_class.is_interface():
+                if not self.is_interface():
+                    return other_class.is_sub_class_of(self)
+                else:
+                    return other_class.is_implementation_of(self)
+            else:
+                if not self.is_interface():
+                    return self.is_jl_object()
+                else:
+                    return self.is_super_class_of(other_class)
         else:
-            return other_class.is_implementation_of(self)
+            if not self.is_array():
+                if not self.is_interface():
+                    return self.is_jl_object()
+                else:
+                    return self.is_jl_cloneable() or self.is_jio_serializable()
+            else:
+                other_component = other_class.component_class()
+                self_component = self.component_class()
+                return other_component == self_component or self_component.is_assignable_from(other_component)
+
+        return False
+
+    def is_jl_object(self):
+        return self.name == "java/lang/Object"
+
+    def is_jl_cloneable(self):
+        return self.name == "java/lang/Cloneable"
+
+    def is_jio_serializable(self):
+        return self.name == "java/io/Serializable"
 
     def __str__(self):
         return "class name: ".join(self.name)
-
 
     # 数组类
     def is_array(self):
@@ -150,3 +178,17 @@ class Class:
         array_class_name = ClassNameHelper.get_array_class_name(self.name)
         return self.loader.load_class(array_class_name)
 
+    def component_class(self):
+        component_class_name = ClassNameHelper.get_component_class_name(self.name)
+        return self.loader.load_class(component_class_name)
+
+    def get_field(self, name, descriptor, is_static: bool):
+        c = self
+        while c:
+            for field in c.fields:
+                if field.is_static() == is_static:
+                    if field.name == name and field.descriptor == descriptor:
+                        return field
+            c = c.super_class
+
+        return None

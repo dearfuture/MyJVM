@@ -67,13 +67,6 @@ def load_class(class_name, class_path):
     cf = class_file.parse(class_data)
     return cf
 
-# 被Class的get_main_method取代
-# def get_main_method(class_file: ClassFile):
-#     for method in class_file.methods:
-#         if method.name == "main" and method.descriptor == "([Ljava/lang/String;)V":
-#             return method
-#     return None
-
 # 启动JVM函数
 def start_JVM(cmd):
     # 解析类路径
@@ -93,7 +86,8 @@ def start_JVM(cmd):
         bytecode = main_method.code
         hex_string = ' '.join(f'{byte:02x}' for byte in bytecode)
         print(hex_string)
-        Interpreter.interpret(main_method)
+        # Interpreter.interpret(main_method)
+        Interpreter.interpret(main_method, cmd.args)
 
     else:
         print("Main method not found")
@@ -105,12 +99,11 @@ if __name__ == '__main__':
     # 指定-Xjre选项和类名
     root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
     resources_path = os.path.join(os.path.dirname(root_path), "java/class")
-    # resources_path = "F:\\JVM\\MyJVM\\java\\class"
 
-    fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch08.BubbleSortTest']
-    # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch06.FieldTest']
+    fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch08.PrintArgs', 'foo', 'bar', '你好，世界！']
+    # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch01.HelloWorld']
+    # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch08.BubbleSortTest']
 
-    # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch07.FibonacciTest']
     main(fake_args)
 
 

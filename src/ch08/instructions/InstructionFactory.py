@@ -14,7 +14,7 @@ from instructions.control.Return import ARETURN, RETURN, IRETURN, LRETURN, DRETU
 from instructions.loads.Aload import ALOAD, ALOAD_1, ALOAD_2, ALOAD_3, ALOAD_0
 from instructions.loads.Iload import ILOAD_2, ILOAD_1, ILOAD_3, ILOAD
 from instructions.loads.Lload import LLOAD_0, LLOAD_1, LLOAD_2, LLOAD_3, LLOAD
-from instructions.loads.Xaload import IALOAD
+from instructions.loads.Xaload import IALOAD, AALOAD
 from instructions.math.Add import IADD, LADD
 from instructions.math.Iinc import IINC
 from instructions.math.Sub import LSUB, ISUB
@@ -115,7 +115,8 @@ class InstructionFactory:
 
         elif opcode == 0x2e:
             return IALOAD()
-
+        elif opcode == 0x32:
+            return AALOAD()
         elif opcode == 0x36:
             return ISTORE()
 
