@@ -25,8 +25,8 @@ class BytecodeReader:
         return ctypes.c_int8(i).value
 
     def read_uint16(self):
-        byte1 = self.read_int8()
-        byte2 = self.read_int8()
+        byte1 = self.read_uint8()
+        byte2 = self.read_uint8()
         return ctypes.c_uint16( (byte1 << 8) | byte2 ).value
 
     def read_int16(self):

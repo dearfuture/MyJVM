@@ -19,7 +19,7 @@ class RETURN(NoOperandsInstruction):
 class ARETURN(NoOperandsInstruction):
     def execute(self, frame: Frame):
         thread = frame.thread
-        current_frame = thread.current_frame
+        current_frame = thread.pop_frame()
         invoke_frame = thread.top_frame
         ref = current_frame.operand_stack.pop_ref()
         invoke_frame.operand_stack.push_ref(ref)

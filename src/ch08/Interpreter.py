@@ -98,7 +98,7 @@ class Interpreter:
         method_name = method.name
         pc = frame.thread.pc
 
-        print("{0}.{1}() #{2:<2} {3} {4} operand_stack: {5} local_vars: {6}".format(class_name, method_name, pc,
+        print("{0}.{1}() #{2:<2} {3} {4} {5} operand_stack: {6} local_vars: {7}".format(class_name, method_name, pc, hex(opcode),
                                                                                     instruction.__class__.__name__,
                                                                                     Interpreter.print_obj(instruction),
                                                                                     frame.operand_stack,
