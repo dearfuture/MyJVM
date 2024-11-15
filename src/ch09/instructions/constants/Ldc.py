@@ -11,10 +11,11 @@ def _ldc(frame, index):
     c = rt_constant_pool.get_constant(index)
     clazz = frame.method.get_class()
 
-    # if isinstance(c, int):
-    #    stack.push_int(c)
-    if isinstance(c, int) or isinstance(c, float):
+    if isinstance(c, int):
         stack.push_numeric(c)
+
+    elif isinstance(c, float):
+        stack.push_float(c)
 
     #  elif cp_info.tag == ConstantInfo.CONSTANT_String:  consts[i] = str(cp_info)
     elif isinstance(c, str):

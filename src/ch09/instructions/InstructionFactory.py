@@ -11,13 +11,17 @@ from instructions.constants.Ldc import LDC_W, LDC, LDC2_W
 from instructions.constants.Nop import NOP
 from instructions.control.Goto import GOTO
 from instructions.control.Return import ARETURN, RETURN, IRETURN, LRETURN, DRETURN, FRETURN
+from instructions.convensions.I2x import I2L
 from instructions.extended.IfNull import IF_NON_NULL, IF_NULL
 from instructions.loads.Aload import ALOAD, ALOAD_1, ALOAD_2, ALOAD_3, ALOAD_0
-from instructions.loads.Iload import ILOAD_2, ILOAD_1, ILOAD_3, ILOAD
+from instructions.loads.Iload import ILOAD_2, ILOAD_1, ILOAD_3, ILOAD, ILOAD_0
 from instructions.loads.Lload import LLOAD_0, LLOAD_1, LLOAD_2, LLOAD_3, LLOAD
-from instructions.loads.Xaload import IALOAD, AALOAD
+from instructions.loads.Xaload import IALOAD, AALOAD, CALOAD
 from instructions.math.Add import IADD, LADD
+from instructions.math.And import IAND
 from instructions.math.Iinc import IINC
+from instructions.math.Mul import IMUL, LMUL
+from instructions.math.Sh import IUSHR, ISHL, LSHL
 from instructions.math.Sub import LSUB, ISUB
 from instructions.references.AnewArray import ANEW_ARRAY
 from instructions.references.ArrayLength import ARRAY_LENGTH
@@ -37,7 +41,7 @@ from instructions.references.PutStatic import PUT_STATIC
 from instructions.stack.Dup import DUP
 from instructions.stack.Pop import POP, POP2
 from instructions.stores.Astore import ASTORE, ASTORE_1, ASTORE_2, ASTORE_3, ASTORE_0
-from instructions.stores.Istore import ISTORE_1, ISTORE_2, ISTORE_3, ISTORE
+from instructions.stores.Istore import ISTORE_1, ISTORE_2, ISTORE_3, ISTORE, ISTORE_0
 from instructions.stores.Lstore import LSTORE_1, LSTORE_0, LSTORE_2, LSTORE_3
 from instructions.stores.Xastore import IASTORE, CASTORE, SASTORE, AASTORE, BASTORE
 
@@ -92,6 +96,8 @@ class InstructionFactory:
         elif opcode == 0x19:
             return ALOAD()
 
+        elif opcode == 0x1a:
+            return ILOAD_0()
         elif opcode == 0x1b:
             return ILOAD_1()
         elif opcode == 0x1c:
@@ -121,11 +127,15 @@ class InstructionFactory:
             return IALOAD()
         elif opcode == 0x32:
             return AALOAD()
+        elif opcode == 0x34:
+            return CALOAD()
         elif opcode == 0x36:
             return ISTORE()
 
         elif opcode == 0x3a:
             return ASTORE()
+        elif opcode == 0x3b:
+            return ISTORE_0()
         elif opcode == 0x3c:
             return ISTORE_1()
         elif opcode == 0x3d:
@@ -178,9 +188,28 @@ class InstructionFactory:
         elif opcode == 0x65:
             return LSUB()
 
+        elif opcode == 0x68:
+            return IMUL()
+        elif opcode == 0x69:
+            return LMUL()
+
+        elif opcode == 0x78:
+            return ISHL()
+        elif opcode == 0x79:
+            return LSHL()
+        elif opcode == 0x7c:
+            return IUSHR()
+
+        elif opcode == 0x7e:
+            return IAND()
+        elif opcode == 0x7f:
+            return IAND()
+
         elif opcode == 0x84:
             return IINC()
 
+        elif opcode == 0x85:
+            return I2L()
 
         elif opcode == 0x99:
             return IFEQ()

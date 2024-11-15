@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
+import struct
 
 
 class Slot:
@@ -24,6 +25,22 @@ class Slots(list):
 
     def get_numeric(self, index):
         return self[index].num
+
+    def set_double(self, index, val):
+        val = struct.unpack('>q', struct.pack('>d', val))[0]
+        self.set_numeric(index, val)
+
+    def get_double(self, index):
+        val = self.get_numeric(index)
+        return struct.unpack('>d', struct.pack('>q', val))[0]
+
+    def set_float(self, index, val):
+        val = struct.unpack('>l', struct.pack('>f', val))[0]
+        self.set_numeric(index, val)
+
+    def get_float(self, index):
+        val = self.get_numeric(index)
+        return struct.unpack('>f', struct.pack('>l', val))[0]
 
     def set_ref(self, index, ref):
         self[index].ref = ref

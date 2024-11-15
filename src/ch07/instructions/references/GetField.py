@@ -26,9 +26,9 @@ class GET_FIELD(Index16Instruction):
         slot_id = field.slot_id
         slots = ref.fields
 
-        if descriptor[0] in {"Z", "B", "C", "S", "I"}:
+        if descriptor[0] in {"Z", "B", "C", "S", "I", "J"}:
             stack.push_numeric(slots.get_numeric(slot_id))
-        elif descriptor[0] in {"F", "J", "D"}:
+        elif descriptor[0] in {"F", "D"}:
             stack.push_numeric(slots.get_numeric(slot_id))
         elif descriptor[0] in {"L", "["}:
             stack.push_ref(slots.get_ref(slot_id))

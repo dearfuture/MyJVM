@@ -4,12 +4,6 @@ from native import Registry
 from rtda.Frame import Frame
 from rtda.heap import StringPool
 
-
-# def init():
-#     Registry.register("java/lang/Class", "getPrimitiveClass", "(Ljava/lang/String;)Ljava/lang/Class;", getPrimitiveClass)
-#     Registry.register("java/lang/Class", "getName0", "()Ljava/lang/String;", getName0)
-#     Registry.register("java/lang/Class", "desireAssertionStatus0", "(Ljava/lang/Class;)Z", desireAssertionStatus0)
-
 # static native Class<?> getPrimitiveClass(String name);
 def getPrimitiveClass(frame: Frame):
     # j_string

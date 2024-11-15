@@ -82,9 +82,11 @@ class Method(ClassMember):
         return 0 != self.access_flags & AccessFlags.ACC_NATIVE
 
     def inject_code_attribute(self, return_type):
+        # 由于本地方法在class文件中没有Code属性, 所以需要给max_stack和max_locals赋值
         self.max_stack = 4
         self.max_locals = self.arg_slot_count
 
+        # code字段是本地方法的字节码，第一条指令都是0xfe(INVOKE_NATIVE), 第二条指令则根据函数的返回值类型选择相应的返回指令
         if return_type[0] == 'V':
             # return
             self.code = [0xfe, 0xb1]

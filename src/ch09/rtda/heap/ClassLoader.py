@@ -170,12 +170,16 @@ class ClassLoader:
 
         if index > 0:
             type = field.descriptor
-            if type in {"Z", "B", "C", "S", "I"}:
+            if type in {"Z", "B", "C", "S", "I", "J"}:
                 val = rt_constant_pool.get_constant(index)
                 static_vars.set_numeric(slot_id, val)
-            elif type in {"J", "F", "D"}:
+
+            elif type == "D":
                 val = rt_constant_pool.get_constant(index)
-                static_vars.set_numeric(slot_id, val)
+                static_vars.set_double(slot_id, val)
+            elif type == "F":
+                val = rt_constant_pool.get_constant(index)
+                static_vars.set_float(slot_id, val)
 
             elif type == "Ljava/lang/String;":
                 py_str = rt_constant_pool.get_constant(index)

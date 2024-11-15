@@ -17,5 +17,5 @@ def invoke_method(invoke_frame: Frame, method: Method):
         i -= 1
 
     # ch09去掉native方法的HACK
-    # if method.is_native():
-    #    print("NativeMethod: {}.{}{}".format(method.get_class().name, method.name, method.descriptor))
+    if method.is_native():
+        print("NativeMethod: {}.{}{}".format(method.get_class().name, method.name, method.descriptor))

@@ -23,22 +23,28 @@ class PUT_FIELD(Index16Instruction):
         slot_id = field.slot_id
         stack = frame.operand_stack
 
-        if descriptor[0] in {"Z", "B", "C", "S", "I"}:
+        if descriptor[0] in {"Z", "B", "C", "S", "I", "J"}:
             val = stack.pop_numeric()
             ref = stack.pop_ref()
             if ref is None:
-                raise RuntimeError("java.lang.NullPointerException")
-            # ref是NEW生成的Object的引用, 实际上是Object.fields
+                raise RuntimeError("java.lang.NollPointerException")
             ref.fields.set_numeric(slot_id, val)
 
-        elif descriptor[0] in {"F", "J", "D"}:
-            val = stack.pop_numeric()
+        if descriptor[0] == 'D':
+            val = stack.pop_double()
             ref = stack.pop_ref()
             if ref is None:
-                raise RuntimeError("java.lang.NullPointerException")
-            ref.fields.set_numeric(slot_id, val)
+                raise RuntimeError("java.lang.NollPointerException")
+            ref.fields.set_double(slot_id, val)
+        if descriptor[0] == 'F':
+            val = stack.pop_float()
+            ref = stack.pop_ref()
+            if ref is None:
+                raise RuntimeError("java.lang.NollPointerException")
+            ref.fields.set_float(slot_id, val)
+
         elif descriptor[0] in {"L", "["}:
-            val = stack.pop_numeric()
+            val = stack.pop_ref()
             ref = stack.pop_ref()
             if ref is None:
                 raise RuntimeError("java.lang.NullPointerException")

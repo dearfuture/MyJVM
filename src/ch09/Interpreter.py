@@ -10,9 +10,9 @@ from rtda.Thread import Thread
 from rtda.heap.Method import Method
 from rtda.heap import StringPool
 
-# 导入Class, Object执行Registry.register
-from native.java.lang import Class
-from native.java.lang import Object
+# 导入Class, Object, System, Float, Double, String执行Registry.register
+from native.java.lang import Class, Object, System, Float, Double, String
+
 
 class Interpreter:
     def __init__(self):
@@ -46,8 +46,7 @@ class Interpreter:
             frame.local_vars.set_ref(0, j_args)
 
         try:
-            # Interpreter.loop(thread, True)
-            Interpreter.loop(thread, False)
+            Interpreter.loop(thread, True)
         except RuntimeError as e:
             Interpreter.log_frames(thread)
             print("LocalVars: {0}".format(frame.local_vars))
@@ -71,7 +70,7 @@ class Interpreter:
             frame.next_pc = bytecode_reader.pc
 
             inst_count += 1
-            # print("inst_count={0}".format(inst_count))
+            print("inst_count={0}".format(inst_count))
 
             if log_inst:
                 Interpreter.log_instruction(frame, instruction, opcode)

@@ -43,7 +43,7 @@ class FieldRef(MemberRef):
         # 递归从接口查找
         for interface in clazz.interfaces:
             field = FieldRef.lookup_field(interface, name, descriptor)
-            if field is None:
+            if field:
                 return field
 
         # 递归从父类查找

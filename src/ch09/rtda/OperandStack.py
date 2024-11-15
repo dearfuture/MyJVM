@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
+import struct
+
 from rtda.Slot import Slot
 
 
@@ -23,36 +25,34 @@ class OperandStack:
         self.size -= 1
         return self.slots[self.size].num
 
-    # def push_numeric32(self, val):
-    #     self.slots[self.size].num = val
-    #     self.size += 1
-    #
-    # def pop_numeric32(self):
-    #     self.size -= 1
-    #     return self.slots[self.size].num
-    #
-    # def push_numeric64(self, val):
-    #     self.slots[self.size].num = val
-    #     self.size += 2
-    #
-    # def pop_numeric64(self):
-    #     self.size -= 2
-    #     return self.slots[self.size].num
+    def push_double(self, val):
+        val = struct.unpack('>q', struct.pack('>d', val))[0]
+        self.push_numeric(val)
+
+    def pop_double(self):
+        val = self.pop_numeric()
+        return struct.unpack('>d', struct.pack('>q', val))[0]
+
+    def push_float(self, val):
+        val = struct.unpack('>l', struct.pack('>f', val))[0]
+        self.push_numeric(val)
+
+    def pop_float(self):
+        val = self.pop_numeric()
+        return struct.unpack('>f', struct.pack('>l', val))[0]
+
+    def push_boolean(self, val):
+        if val:
+            self.push_numeric(1)
+        else:
+            self.push_numeric(0)
+
+    def pop_boolean(self):
+        return self.pop_numeric() == 1
 
     def push_ref(self, ref):
         self.slots[self.size].ref = ref
         self.size += 1
-
-    # 因为Dup实现有问题的临时补丁, 已经不需要了
-    # def pop_ref(self):
-    #     self.size -= 1
-    #     ref = self.slots[self.size].ref
-    #     if self.size > 0:
-    #         ref_bak = self.slots[self.size - 1].ref
-    #     self.slots[self.size].ref = None
-    #     if self.size > 0:
-    #         self.slots[self.size - 1].ref = ref_bak
-    #     return ref
 
     def pop_ref(self):
         self.size -= 1

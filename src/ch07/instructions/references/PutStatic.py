@@ -30,9 +30,9 @@ class PUT_STATIC(Index16Instruction):
         slots = clazz.static_vars
         stack = frame.operand_stack
 
-        if descriptor[0] in {"Z", "B", "C", "S", "I"}:
+        if descriptor[0] in {"Z", "B", "C", "S", "I", "J"}:
             slots.set_numeric(slot_id, stack.pop_numeric())
-        elif descriptor[0] in {"F", "J", "D"}:
+        elif descriptor[0] in {"F", "D"}:
             slots.set_numeric(slot_id, stack.pop_numeric())
         elif descriptor[0] in {"L", "["}:
             slots.set_ref(slot_id, stack.pop_ref())

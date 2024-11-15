@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
+import struct
+
 from rtda.Slot import Slot
 
 
@@ -19,18 +21,21 @@ class LocalVars:
     def get_numeric(self, index):
         return self.slots[index].num
 
-    # def set_numeric32(self, index, val):
-    #     self.slots[index].num = val
-    #
-    # def get_numeric32(self, index):
-    #     return self.slots[index].num
-    #
-    # def set_numeric64(self, index, val):
-    #     self.slots[index].num = val
-    #     self.slots[index + 1].num = 0
-    #
-    # def get_numeric64(self, index):
-    #     return self.slots[index].num
+    def get_double(self, index):
+        val = self.get_numeric(index)
+        return struct.unpack('>d', struct.pack('>q', val))[0]
+
+    def set_double(self, index, val):
+        val = struct.unpack('>q', struct.pack('>d', val))[0]
+        self.set_numeric(index, val)
+
+    def get_float(self, index):
+        val = self.get_numeric(index)
+        return struct.unpack('>f', struct.pack('>l', val))[0]
+
+    def set_float(self, index, val):
+        val = struct.unpack('>l', struct.pack('>f', val))[0]
+        self.set_numeric(index, val)
 
     def set_ref(self, index, ref):
         self.slots[index].ref = ref
