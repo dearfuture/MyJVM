@@ -41,4 +41,13 @@ class LDC_W(Index16Instruction):
 
 class LDC2_W(Index16Instruction):
     def execute(self, frame):
-        _ldc(frame, self.index)
+        stack = frame.operand_stack
+        cp = frame.method.get_class().rt_constant_pool
+        c = cp.get_constant(self.index)
+
+        if isinstance(c, int):
+            stack.push_numeric(c)
+        elif isinstance(c, float):
+            stack.push_double(c)
+        else:
+            raise RuntimeError("java.lang.ClassFormatError")

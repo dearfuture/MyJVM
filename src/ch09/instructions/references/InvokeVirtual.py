@@ -28,8 +28,14 @@ class INVOKE_VIRTUAL(Index16Instruction):
 
                 if descriptor == "(Z)V":
                     print("{0}".format(stack.pop_numeric() != 0))
-                elif descriptor in {"(C)V", "(B)V", "(S)V", "(I)V", "(J)V", "(F)V", "(D)V"}:
+                elif descriptor in {"(C)V", "(B)V", "(S)V", "(I)V", "(J)V"}:
                     print("{0}".format(stack.pop_numeric()))
+
+
+                elif descriptor == "(D)V":
+                    print("{0}".format(stack.pop_double()))
+                elif descriptor == "(F)V":
+                    print("{0}".format(stack.pop_float()))
 
                 elif descriptor == "(Ljava/lang/String;)V":
                     j_str = stack.pop_ref()

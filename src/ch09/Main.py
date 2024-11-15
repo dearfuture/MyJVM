@@ -101,7 +101,9 @@ if __name__ == '__main__':
     resources_path = os.path.join(os.path.dirname(root_path), "java/class")
 
     # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.GetClassTest']
-    fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.StringTest']
+    # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.StringTest']
+    # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.ObjectTest']
+    fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.CloneTest']
 
     main(fake_args)
 

@@ -19,6 +19,7 @@ from instructions.loads.Lload import LLOAD_0, LLOAD_1, LLOAD_2, LLOAD_3, LLOAD
 from instructions.loads.Xaload import IALOAD, AALOAD, CALOAD
 from instructions.math.Add import IADD, LADD
 from instructions.math.And import IAND
+from instructions.math.Div import IDIV, LDIV
 from instructions.math.Iinc import IINC
 from instructions.math.Mul import IMUL, LMUL
 from instructions.math.Sh import IUSHR, ISHL, LSHL
@@ -192,6 +193,11 @@ class InstructionFactory:
             return IMUL()
         elif opcode == 0x69:
             return LMUL()
+
+        elif opcode == 0x6c:
+            return IDIV()
+        elif opcode == 0x6d:
+            return LDIV()
 
         elif opcode == 0x78:
             return ISHL()

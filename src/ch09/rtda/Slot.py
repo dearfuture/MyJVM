@@ -47,3 +47,10 @@ class Slots(list):
 
     def get_ref(self, index):
         return self[index].ref
+
+
+def copy_slot(slot):
+    new_slot = Slot()
+    new_slot.num = slot.num
+    new_slot.ref = slot.ref
+    return new_slot

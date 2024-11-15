@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-from rtda.Slot import Slots
+from rtda.Slot import Slots, copy_slot
 from rtda.heap.Class import Class
 
 # 实际上是ObjectRef, 与ClassRef, FieldRef, MethodRef之类的不同
@@ -73,3 +73,16 @@ class Object:
         field = self.clazz.get_field(name, descriptor, False)
         slots = self.data
         return slots.get_ref(field.slot_id)
+
+    def clone(self):
+        return Object(self.clazz, self.clone_data())
+
+    def clone_data(self):
+        if not isinstance(self.data, Slots):
+            new_data = list(self.data)
+            return new_data
+        else:
+            new_data = Slots(len(self.data))
+            for i, slot in enumerate(self.data):
+                new_data[i] = copy_slot(slot)
+            return new_data

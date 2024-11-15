@@ -3,14 +3,8 @@
 
 from instructions.base.Instruction import NoOperandsInstruction
 from rtda.Frame import Frame
-from rtda.Slot import Slot
+from rtda.Slot import copy_slot
 
-
-def copy_slot(slot):
-    new_slot = Slot()
-    new_slot.num = slot.num
-    new_slot.ref = slot.ref
-    return new_slot
 
 class DUP(NoOperandsInstruction):
     def execute(self, frame: Frame):
