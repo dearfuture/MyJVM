@@ -174,8 +174,13 @@ class Class:
         from .Object import Object
         if not self.is_array():
             raise RuntimeError("Not array class: {}".format(self.name))
-
         return Object(self, [0 for _ in range(count)])
+
+    # def new_ref_array(self, count):
+    #     from .Object import Object
+    #     if not self.is_array():
+    #         raise RuntimeError("Not array class: {}".format(self.name))
+    #     return Object(self, Slots(count))
 
     def array_class(self):
         array_class_name = ClassNameHelper.get_array_class_name(self.name)
@@ -198,3 +203,26 @@ class Class:
 
     def java_name(self):
         return self.name.replace("/", ".")
+
+    # 根据字段名和描述符查找方法
+    def get_method(self, name, descriptor, is_static_flag):
+        c = self
+        while c:
+            for method in c.methods:
+                if method.is_static() == is_static_flag \
+                        and method.name == name and method.descriptor == descriptor:
+                    return method
+
+            c = c.super_class
+        return None
+
+    def get_instance_method(self, name, descriptor):
+        return self.get_method(name, descriptor, False)
+
+    def get_ref_var(self, field_name, field_descriptor):
+        field = self.get_field(field_name, field_descriptor, True)
+        return self.static_vars.get_ref(field.slot_id)
+
+    def set_ref_var(self, field_name, field_descriptor, ref):
+        field = self.get_field(field_name, field_descriptor, True)
+        self.static_vars.set_ref(field.sort_id, ref)

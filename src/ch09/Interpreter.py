@@ -12,6 +12,7 @@ from rtda.heap import StringPool
 
 # 导入Class, Object, System, Float, Double, String执行Registry.register
 from native.java.lang import Class, Object, System, Float, Double, String
+from native.sun.misc import VM
 
 
 class Interpreter:

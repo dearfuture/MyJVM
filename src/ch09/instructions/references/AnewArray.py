@@ -19,6 +19,7 @@ class ANEW_ARRAY(Index16Instruction):
 
         array_class = component_class.array_class()
         array = array_class.new_array(count)
+        # array = array_class.new_ref_array(count)
         stack.push_ref(array)
 
 

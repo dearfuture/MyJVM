@@ -51,6 +51,10 @@ class OperandStack:
         return self.pop_numeric() == 1
 
     def push_ref(self, ref):
+        # TODO, ANEW_ARRAY初始化为0?
+        if ref == 0:
+            ref = None
+
         self.slots[self.size].ref = ref
         self.size += 1
 

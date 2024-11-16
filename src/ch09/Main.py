@@ -103,7 +103,8 @@ if __name__ == '__main__':
     # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.GetClassTest']
     # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.StringTest']
     # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.ObjectTest']
-    fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.CloneTest']
+    # fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.CloneTest']
+    fake_args = ['--Xjre', Xjre_path, '--cp', resources_path, 'jvmgo.book.ch09.BoxTest']
 
     main(fake_args)
 

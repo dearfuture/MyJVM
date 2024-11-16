@@ -46,12 +46,32 @@ class CALOAD(NoOperandsInstruction):
 # Double数组
 class DALOAD(NoOperandsInstruction):
     def execute(self, frame: Frame):
-        _xload(frame)
+        stack = frame.operand_stack
+        index = stack.pop_numeric()
+        array_ref = stack.pop_ref()
+
+        if array_ref is None:
+            raise RuntimeError("java.lang.NullPointerException")
+        xarray = array_ref.data
+
+        if index < 0 or index >= len(xarray):
+            raise RuntimeError("ArrayIndexOutOfBoundsException")
+        stack.push_double(xarray[index])
 
 # Float数组
 class FALOAD(NoOperandsInstruction):
     def execute(self, frame: Frame):
-        _xload(frame)
+        stack = frame.operand_stack
+        index = stack.pop_numeric()
+        array_ref = stack.pop_ref()
+
+        if array_ref is None:
+            raise RuntimeError("java.lang.NullPointerException")
+        xarray = array_ref.data
+
+        if index < 0 or index >= len(xarray):
+            raise RuntimeError("ArrayIndexOutOfBoundsException")
+        stack.push_float(xarray[index])
 
 # Integer数组
 class IALOAD(NoOperandsInstruction):

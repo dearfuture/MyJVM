@@ -38,6 +38,10 @@ class LocalVars:
         self.set_numeric(index, val)
 
     def set_ref(self, index, ref):
+        # TODO, ANEW_ARRAY初始化为0?
+        if ref == 0:
+            ref = None
+
         self.slots[index].ref = ref
 
     def get_ref(self, index: int):

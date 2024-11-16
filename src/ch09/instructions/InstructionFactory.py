@@ -1,19 +1,23 @@
 #!/usr/bin/env python
 # encoding: utf-8
+from instructions.comparsions.Fcmp import FCMPL, FCMPG
 from instructions.comparsions.Ifacmp import IF_ACMPEQ, IF_ACMPNE
 from instructions.comparsions.Ifcond import IFEQ, IFNE, IFLT, IFGE, IFGT, IFLE
 from instructions.comparsions.Ificmp import IF_ICMPLE, IF_ICMPGT, IF_ICMPGE, IF_ICMPLT, IF_ICMPEQ, IF_ICMPNE
 from instructions.comparsions.Lcmp import LCMP
 from instructions.constants.Const import ICONST_0, ICONST_1, ICONST_M1, ACONST_NULL, LCONST_1, ICONST_2, ICONST_3, \
-    LCONST_0, ICONST_4, ICONST_5
+    LCONST_0, ICONST_4, ICONST_5, DCONST_0, DCONST_1, FCONST_0, FCONST_1, FCONST_2
 from instructions.constants.Ipush import BIPUSH, SIPUSH
 from instructions.constants.Ldc import LDC_W, LDC, LDC2_W
 from instructions.constants.Nop import NOP
 from instructions.control.Goto import GOTO
 from instructions.control.Return import ARETURN, RETURN, IRETURN, LRETURN, DRETURN, FRETURN
-from instructions.convensions.I2x import I2L
+from instructions.convensions.F2x import F2I
+from instructions.convensions.I2x import I2L, I2F
 from instructions.extended.IfNull import IF_NON_NULL, IF_NULL
 from instructions.loads.Aload import ALOAD, ALOAD_1, ALOAD_2, ALOAD_3, ALOAD_0
+from instructions.loads.Dload import DLOAD_0, DLOAD_1, DLOAD_2, DLOAD_3
+from instructions.loads.Fload import FLOAD_0, FLOAD_1, FLOAD_2, FLOAD_3
 from instructions.loads.Iload import ILOAD_2, ILOAD_1, ILOAD_3, ILOAD, ILOAD_0
 from instructions.loads.Lload import LLOAD_0, LLOAD_1, LLOAD_2, LLOAD_3, LLOAD
 from instructions.loads.Xaload import IALOAD, AALOAD, CALOAD
@@ -21,8 +25,9 @@ from instructions.math.Add import IADD, LADD
 from instructions.math.And import IAND
 from instructions.math.Div import IDIV, LDIV
 from instructions.math.Iinc import IINC
-from instructions.math.Mul import IMUL, LMUL
-from instructions.math.Sh import IUSHR, ISHL, LSHL
+from instructions.math.Mul import IMUL, LMUL, FMUL, DMUL
+from instructions.math.Rem import IREM
+from instructions.math.Sh import IUSHR, ISHL, LSHL, LUSHR, LSHR, ISHR
 from instructions.math.Sub import LSUB, ISUB
 from instructions.references.AnewArray import ANEW_ARRAY
 from instructions.references.ArrayLength import ARRAY_LENGTH
@@ -39,7 +44,7 @@ from instructions.references.New import NEW
 from instructions.references.NewArray import NEW_ARRAY
 from instructions.references.PutField import PUT_FIELD
 from instructions.references.PutStatic import PUT_STATIC
-from instructions.stack.Dup import DUP
+from instructions.stack.Dup import DUP, DUP2_X1, DUP2_X2, DUP_X1, DUP_X2
 from instructions.stack.Pop import POP, POP2
 from instructions.stores.Astore import ASTORE, ASTORE_1, ASTORE_2, ASTORE_3, ASTORE_0
 from instructions.stores.Istore import ISTORE_1, ISTORE_2, ISTORE_3, ISTORE, ISTORE_0
@@ -74,6 +79,17 @@ class InstructionFactory:
         elif opcode == 0x0a:
             return LCONST_1()
 
+        elif opcode == 0x0b:
+            return FCONST_0()
+        elif opcode == 0x0c:
+            return FCONST_1()
+        elif opcode == 0x0d:
+            return FCONST_2()
+
+        elif opcode == 0x0e:
+            return DCONST_0()
+        elif opcode == 0x0f:
+            return DCONST_1()
 
         elif opcode == 0x10:
             return BIPUSH()
@@ -114,6 +130,24 @@ class InstructionFactory:
             return LLOAD_2()
         elif opcode == 0x21:
             return LLOAD_3()
+
+        elif opcode == 0x22:
+            return FLOAD_0()
+        elif opcode == 0x23:
+            return FLOAD_1()
+        elif opcode == 0x24:
+            return FLOAD_2()
+        elif opcode == 0x25:
+            return FLOAD_3()
+
+        elif opcode == 0x26:
+            return DLOAD_0()
+        elif opcode == 0x27:
+            return DLOAD_1()
+        elif opcode == 0x28:
+            return DLOAD_2()
+        elif opcode == 0x29:
+            return DLOAD_3()
 
         elif opcode == 0x2a:
             return ALOAD_0()
@@ -179,6 +213,10 @@ class InstructionFactory:
             return POP2()
         elif opcode == 0x59:
             return DUP()
+        elif opcode == 0x5a:
+            return DUP_X1()
+        elif opcode == 0x5b:
+            return DUP_X2()
 
         elif opcode == 0x60:
             return IADD()
@@ -193,16 +231,27 @@ class InstructionFactory:
             return IMUL()
         elif opcode == 0x69:
             return LMUL()
+        elif opcode == 0x6a:
+            return FMUL()
+        elif opcode == 0x6b:
+            return DMUL()
 
         elif opcode == 0x6c:
             return IDIV()
         elif opcode == 0x6d:
             return LDIV()
 
+        elif opcode == 0x70:
+            return IREM()
+
         elif opcode == 0x78:
             return ISHL()
         elif opcode == 0x79:
             return LSHL()
+        elif opcode == 0x7a:
+            return ISHR()
+        elif opcode == 0x7b:
+            return LSHR()
         elif opcode == 0x7c:
             return IUSHR()
 
@@ -216,6 +265,16 @@ class InstructionFactory:
 
         elif opcode == 0x85:
             return I2L()
+        elif opcode == 0x86:
+            return I2F()
+
+        elif opcode == 0x8b:
+            return F2I()
+
+        elif opcode == 0x95:
+            return FCMPL()
+        elif opcode == 0x96:
+            return FCMPG()
 
         elif opcode == 0x99:
             return IFEQ()

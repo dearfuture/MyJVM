@@ -33,13 +33,22 @@ class LRETURN(NoOperandsInstruction):
     def execute(self, frame: Frame):
         _numeric_return(frame)
 
-class FRETURN(NoOperandsInstruction):
-    def execute(self, frame: Frame):
-        _numeric_return(frame)
-
 class DRETURN(NoOperandsInstruction):
-    def execute(self, frame: Frame):
-        _numeric_return(frame)
+    def execute(self, frame):
+        thread = frame.thread
+        current_frame = thread.pop_frame()
+        invoker_frame = thread.top_frame
+        val = current_frame.operand_stack.pop_double()
+        invoker_frame.operand_stack.push_double(val)
+
+
+class FRETURN(NoOperandsInstruction):
+    def execute(self, frame):
+        thread = frame.thread
+        current_frame = thread.pop_frame()
+        invoker_frame = thread.top_frame
+        val = current_frame.operand_stack.pop_float()
+        invoker_frame.operand_stack.push_float(val)
 
 
 

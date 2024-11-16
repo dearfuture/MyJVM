@@ -11,9 +11,107 @@ class DUP(NoOperandsInstruction):
         slot = frame.operand_stack.pop_slot()
         frame.operand_stack.push_slot(slot)
 
-        # Fix: 不能直接push(slot)也不能调用push(slot.copy()), 必须手动实现拷贝slot再push
-        # 直接push(slot)会导致改变"栈顶"slots[index]的同时改变"次栈顶"slots[index-1]
-        # 不能调用push(slot.copy())，因为ref直接值拷贝即可，不要slot.copy()这种深拷贝
         frame.operand_stack.push_slot(copy_slot(slot))
 
+class DUP_X1(NoOperandsInstruction):
+    """
+    bottom -> top
+    [...][c][b][a]
+              __/
+             |
+             V
+    [...][c][a][b][a]
+    """
 
+    def execute(self, frame):
+        stack = frame.operand_stack
+        slot1 = stack.pop_slot()
+        slot2 = stack.pop_slot()
+        stack.push_slot(copy_slot(slot1))
+        stack.push_slot(slot2)
+        stack.push_slot(slot1)
+
+
+class DUP_X2(NoOperandsInstruction):
+    """
+    bottom -> top
+    [...][c][b][a]
+           _____/
+          |
+          V
+    [...][a][c][b][a]
+    """
+
+    def execute(self, frame):
+        stack = frame.operand_stack
+        slot1 = stack.pop_slot()
+        slot2 = stack.pop_slot()
+        slot3 = stack.pop_slot()
+        stack.push_slot(copy_slot(slot1))
+        stack.push_slot(slot3)
+        stack.push_slot(slot2)
+        stack.push_slot(slot1)
+
+class DUP2(NoOperandsInstruction):
+    """
+    bottom -> top
+    [...][c][b][a]____
+              \____   |
+                   |  |
+                   V  V
+    [...][c][b][a][b][a]
+    """
+
+    def execute(self, frame):
+        stack = frame.operand_stack
+        slot1 = stack.pop_slot()
+        slot2 = stack.pop_slot()
+        stack.push_slot(slot2)
+        stack.push_slot(slot1)
+        stack.push_slot(copy_slot(slot2))
+        stack.push_slot(copy_slot(slot1))
+
+class DUP2_X1(NoOperandsInstruction):
+    """
+    bottom -> top
+    [...][c][b][a]
+           _/ __/
+          |  |
+          V  V
+    [...][b][a][c][b][a]
+    """
+
+    def execute(self, frame):
+        stack = frame.operand_stack
+        slot1 = stack.pop_slot()
+        slot2 = stack.pop_slot()
+        slot3 = stack.pop_slot()
+        stack.push_slot(copy_slot(slot2))
+        stack.push_slot(copy_slot(slot1))
+        stack.push_slot(slot3)
+        stack.push_slot(slot2)
+        stack.push_slot(slot1)
+
+
+class DUP2_X2(NoOperandsInstruction):
+    """
+    bottom -> top
+    [...][d][c][b][a]
+           ____/ __/
+          |   __/
+          V  V
+    [...][b][a][d][c][b][a]
+    """
+
+    def execute(self, frame):
+        stack = frame.operand_stack
+        slot1 = stack.pop_slot()
+        slot2 = stack.pop_slot()
+        slot3 = stack.pop_slot()
+        slot4 = stack.pop_slot()
+        stack.push_slot(copy_slot(slot2))
+        stack.push_slot(copy_slot(slot1))
+        stack.push_slot(slot4)
+        stack.push_slot(slot3)
+        stack.push_slot(slot2)
+        stack.push_slot(slot1)

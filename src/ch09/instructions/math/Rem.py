@@ -12,5 +12,5 @@ class IREM(NoOperandsInstruction):
         if v2 == 0:
             raise RuntimeError("java.lang.ArithmeticError: / by zero")
         result = v1 % v2
-        frame.operand_stack.pop_numeric(result)
+        frame.operand_stack.push_numeric(result)
 

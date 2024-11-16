@@ -48,12 +48,34 @@ class CASTORE(NoOperandsInstruction):
 # Double数组
 class DASTORE(NoOperandsInstruction):
     def execute(self, frame: Frame):
-        _xstore(frame)
+        stack = frame.operand_stack
+        val = stack.pop_double()
+        index = stack.pop_numeric()
+        array_ref = stack.pop_ref()
+
+        if array_ref is None:
+            raise RuntimeError("java.lang.NullPointerException")
+        xarray = array_ref.data
+
+        if index < 0 or index >= len(xarray):
+            raise RuntimeError("ArrayIndexOutOfBoundsException")
+        xarray[index] = val
 
 # Float数组
 class FASTORE(NoOperandsInstruction):
     def execute(self, frame: Frame):
-        _xstore(frame)
+        stack = frame.operand_stack
+        val = stack.pop_float()
+        index = stack.pop_numeric()
+        array_ref = stack.pop_ref()
+
+        if array_ref is None:
+            raise RuntimeError("java.lang.NullPointerException")
+        xarray = array_ref.data
+
+        if index < 0 or index >= len(xarray):
+            raise RuntimeError("ArrayIndexOutOfBoundsException")
+        xarray[index] = val
 
 # Integer数组
 class IASTORE(NoOperandsInstruction):
